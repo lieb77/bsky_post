@@ -1,0 +1,4 @@
+services:
+  bsky_post.bsky_post:
+    class: Drupal\bsky_post\BskyPost
+    arguments: ['@bsky.post_service']

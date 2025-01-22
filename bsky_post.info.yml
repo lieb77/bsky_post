@@ -1,0 +1,7 @@
+name: 'Bluesky Post'
+type: module
+description: 'Post Drupal content to Bluesky'
+package: Custom
+core_version_requirement: ^10 || ^11
+dependencies:
+  - bsky:bsky

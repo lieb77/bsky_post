@@ -1,0 +1,5 @@
+bsky_post.share_tab:
+  title: 'Share to Bluesky' 
+  route_name: bsky_post.tab
+  base_route: entity.node.canonical
+  weight: 10
