@@ -12,3 +12,11 @@ bsky_post.tab:
         type: entity:node
         bundle:
           - blog
+
+bsky_post.settings:
+  path: '/admin/config/services/bsky-post-settings'
+  defaults:
+    _title: 'Bluesky Post Settings'
+    _form: 'Drupal\bsky_post\Form\BskyPostSettingsForm'
+  requirements:
+    _permission: 'administer site configuration'

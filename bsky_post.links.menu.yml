@@ -1,0 +1,6 @@
+bsky_post.settings:
+  title: Bluesky Post Settings
+  description: Select content types for Bluesky Post
+  parent: system.admin_config_services
+  route_name: bsky_post.settings
+  weight: 10
