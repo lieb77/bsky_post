@@ -14,3 +14,5 @@ which can be edited before posting to Bluesky.
 Dependencies:
 	drupal/bsky
 
+Documentation:
+    https://paullieberman.org/article/bluesky-module
