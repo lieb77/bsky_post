@@ -44,7 +44,7 @@ final class BskyPostForm extends FormBase
                 'title' => $title,
                 'text'  => $text,
                 'link'  => $link,
-			];
+            ];
         }
     }
     
@@ -122,7 +122,8 @@ final class BskyPostForm extends FormBase
                $form_state->getValue('text');
          
         if (mb_strlen($message) > 300) {
-            $form_state->setErrorByName('text',
+            $form_state->setErrorByName(
+                'text',
                 $this->t('Message is too long for Bluesky. Must be lass than 300 things.'),
             );
         } 
