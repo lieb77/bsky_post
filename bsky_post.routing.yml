@@ -1,5 +1,5 @@
 bsky_post.tab:
-  path: '/node/{node}'
+  path: '/node/{node}/bsky'
   defaults:
     _title: 'Share to Bluesky'
     _form: 'Drupal\bsky_post\Form\BskyPostForm'
