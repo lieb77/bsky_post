@@ -4,7 +4,7 @@ bsky_post.tab:
     _title: 'Share to Bluesky'
     _form: 'Drupal\bsky_post\Form\BskyPostForm'
   requirements:
-    _permission: 'Edit own content'
+    _permission: 'post to bluesky'
   options:
     _admin_route: TRUE
     parameters:
@@ -17,4 +17,4 @@ bsky_post.settings:
     _title: 'Bluesky Post Settings'
     _form: 'Drupal\bsky_post\Form\BskyPostSettingsForm'
   requirements:
-    _permission: 'administer site configuration'
+    _permission: 'administer bsky_post configuration'

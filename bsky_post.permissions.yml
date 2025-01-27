@@ -1,0 +1,6 @@
+administer bsky_post configuration:
+  title: 'Administer bsky_post configuration'
+  description: 'Set the content types for the Share to Bluesky tab'
+post to bluesky:
+  title: 'Post to the Bluesky'
+  description: 'Permission to use the Share to Bluesky tab'
