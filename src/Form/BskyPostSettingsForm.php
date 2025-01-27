@@ -13,6 +13,8 @@ use Drupal\node\Entity\NodeType;
  */
 final class BskyPostSettingsForm extends ConfigFormBase {
 
+    protected $types;
+    
   /**
    * {@inheritdoc}
    */
@@ -32,10 +34,13 @@ final class BskyPostSettingsForm extends ConfigFormBase {
    */
   public function buildForm(array $form, FormStateInterface $form_state): array {
 
+      // Get current settings
       $config = $this->config('bsky_post.settings')->get('types');
 
       // Get node types
       $types =  \Drupal\node\Entity\NodeType::loadMultiple();
+      $options =  array_keys($types);
+      $this->types = $options;
 
       $form['message'] = [
           '#type' => 'item',
@@ -45,9 +50,9 @@ final class BskyPostSettingsForm extends ConfigFormBase {
     $form['types'] = [
       '#type' => 'select',
       '#title' => $this->t('Select content types'),
-      '#options' => array_keys($types),
+      '#options' => $options,
       '#multiple' => TRUE,
-      '#default_value' => $config,
+      '#default_value' => array_keys($config),
     ];
     return parent::buildForm($form, $form_state);
   }
@@ -56,6 +61,7 @@ final class BskyPostSettingsForm extends ConfigFormBase {
    * {@inheritdoc}
    */
   public function validateForm(array &$form, FormStateInterface $form_state): void {
+   
       if ( count($form_state->getValue('types')) < 1){
          $form_state->setErrorByName(
            'types',
@@ -69,10 +75,16 @@ final class BskyPostSettingsForm extends ConfigFormBase {
    * {@inheritdoc}
    */
   public function submitForm(array &$form, FormStateInterface $form_state): void {
+    $types = $form_state->getValue('types');
+    foreach ($types as $type) {
+        $settings[$type] = $this->types[$type];
+    }
+
     $this->config('bsky_post.settings')
-      ->set('types', $form_state->getValue('types'))
+      ->set('types', $settings)
       ->save();
     parent::submitForm($form, $form_state);
+    \Drupal::service("router.builder")->rebuild();
   }
 
 }

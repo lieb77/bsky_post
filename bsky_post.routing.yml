@@ -1,17 +1,15 @@
 bsky_post.tab:
-  path: '/blog/{node}'
+  path: '/node/{node}'
   defaults:
     _title: 'Share to Bluesky'
     _form: 'Drupal\bsky_post\Form\BskyPostForm'
   requirements:
-    _permission: 'create blog content'
+    _permission: 'Edit own content'
   options:
     _admin_route: TRUE
     parameters:
       node:
-        type: entity:node
-        bundle:
-          - blog
+        type: entity:node       
 
 bsky_post.settings:
   path: '/admin/config/services/bsky-post-settings'
