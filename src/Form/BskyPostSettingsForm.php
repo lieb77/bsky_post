@@ -40,7 +40,8 @@ final class BskyPostSettingsForm extends ConfigFormBase
 
         // Get current settings
         $config = $this->config('bsky_post.settings')->get('types');
-
+        $default = empty($config) ? [] : array_keys($config);
+        
         // Get node types
         $types =  \Drupal\node\Entity\NodeType::loadMultiple();
         $options =  array_keys($types);
@@ -56,7 +57,7 @@ final class BskyPostSettingsForm extends ConfigFormBase
         '#title' => $this->t('Select content types'),
         '#options' => $options,
         '#multiple' => true,
-        '#default_value' => array_keys($config),
+        '#default_value' => $default,
         ];
         return parent::buildForm($form, $form_state);
     }
