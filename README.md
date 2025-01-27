@@ -12,7 +12,7 @@ The tab presents a form with the Title, Summary, and Link for the node,
 which can be edited before posting to Bluesky.
 
 Dependencies:
-	drupal/bsky
+	drupal/bsky - https://www.drupal.org/project/bsky
 
 Documentation:
     https://paullieberman.org/article/bluesky-module
