@@ -4,5 +4,5 @@ bsky_post.settings:
   label: 'Bluesky Post settings'
   mapping:
     example:
-      type: string
-      label: 'Example'
+      type: mapping
+      label: 'types'
