@@ -1,12 +1,14 @@
 services:
   bsky_post.bsky_post:
     class: Drupal\bsky_post\BskyPost
-    arguments: ['@bsky.post_service']
+    arguments: ['@bsky.post_service', '@config.factory']
+    
   bsky_post.subscriber:
     class: Drupal\bsky_post\Routing\BskyPostRouteSubscriber
     arguments: [ '@entity_type.manager' ]
     tags:
       - { name: event_subscriber }
+      
   Drupal\bsky_post\Hook\BskyPostHooks:
     class: Drupal\bsky_post\Hook\BskyPostHooks
     autowire: true

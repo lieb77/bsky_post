@@ -6,6 +6,7 @@ namespace Drupal\bsky_post;
 
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use potibm\Bluesky\Exception\HttpStatusCodeException;
+use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\bsky\PostServiceInterface;
 
 class BskyPost
@@ -13,22 +14,14 @@ class BskyPost
     protected $bsky_connector;
     protected $site;
         
-    public function __construct(PostServiceInterface $bsky )
+    public function __construct(PostServiceInterface $bsky,
+    							ConfigFactoryInterface $factory )
     {
         $this->bsky_connector = $bsky;
-        $config = \Drupal::config('system.site');
+        $config = $factory->get('system.site');
         $this->site = $config->get('name');
     }
     
-    /**
-     * {@inheritdoc}
-     */
-    public static function create(ContainerInterface $container)
-    {
-        return new static(              
-            $container->get('bsky.post_service')
-        );
-    }
     
     public function post($message, $link)
     {
