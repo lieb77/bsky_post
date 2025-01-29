@@ -5,7 +5,7 @@ services:
     
   bsky_post.subscriber:
     class: Drupal\bsky_post\Routing\BskyPostRouteSubscriber
-    arguments: [ '@entity_type.manager' ]
+    arguments: [ '@entity_type.manager', '@config.factory' ]
     tags:
       - { name: event_subscriber }
       
