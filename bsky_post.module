@@ -1,0 +1,15 @@
+<?php
+/**
+ * Legacy support
+ *
+ */
+ 
+ 
+use Drupal\Core\Hook\Attribute\LegacyHook;
+use Drupal\bsky_post\Hook\BskyPostHooks;
+
+ 
+#[LegacyHook]
+function bsky_post_help() {
+	return \Drupal::service(BskyPostHooks::class)->help();
+}

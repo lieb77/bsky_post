@@ -7,12 +7,17 @@ use Drupal\Core\Url;
 use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\Core\Hook\Attribute\Hook;
 
+/**
+ * Implement hooks per Drupal 11 specs
+ *
+ */
 class BskyPostHooks
 {
     
     /**
-        * Implements hook_help().
-        */
+     * Implements hook_help().
+     *
+     */
     #[Hook('help')]
     public function help($route_name, RouteMatchInterface $route_match)
     {
