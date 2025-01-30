@@ -15,8 +15,8 @@ class BskyPost
     protected $site;
         
     public function __construct(PostServiceInterface $bsky,
-    							ConfigFactoryInterface $factory )
-    {
+        ConfigFactoryInterface $factory 
+    ) {
         $this->bsky_connector = $bsky;
         $config = $factory->get('system.site');
         $this->site = $config->get('name');

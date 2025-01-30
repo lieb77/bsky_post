@@ -36,14 +36,12 @@ class BskyPostRouteSubscriber extends RouteSubscriberBase
      * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
      *   The entity type manager service.
      * @param \Drupal\Core\Config\ConfigFactoryInterfac
-     *
      */
     public function __construct(EntityTypeManagerInterface $entity_type_manager,
-    							ConfigFactoryInterface $factory
-    )
-    {
+        ConfigFactoryInterface $factory
+    ) {
         $this->entityTypeManager = $entity_type_manager;
-  		$this->config = $factory->get('bsky_post.settings');
+        $this->config = $factory->get('bsky_post.settings');
     }
 
     /**
@@ -54,8 +52,8 @@ class BskyPostRouteSubscriber extends RouteSubscriberBase
         // Get the selected types from config
         $types = $this->config->get('types');
    
-   		// Modify our route parameters->node->bundle
-   		// to include our selected node types 
+        // Modify our route parameters->node->bundle
+        // to include our selected node types 
         $route_name = 'bsky_post.tab';
         $route = $collection->get($route_name);
         $options = $route->getOptions();
