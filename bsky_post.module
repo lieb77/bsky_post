@@ -10,6 +10,6 @@ use Drupal\bsky_post\Hook\BskyPostHooks;
 
  
 #[LegacyHook]
-function bsky_post_help() {
+function bsky_post_help($route_name, $route_match) {
 	return \Drupal::service(BskyPostHooks::class)->help();
 }
