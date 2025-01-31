@@ -23,6 +23,8 @@ class BskyPostRouteSubscriber extends RouteSubscriberBase {
   protected $entityTypeManager;
 
   /**
+   * The config factory service.
+   *
    * @var Drupal\Core\Config\ConfigFactoryInterfac
    */
   protected $config;
@@ -31,8 +33,9 @@ class BskyPostRouteSubscriber extends RouteSubscriberBase {
    * Constructs a RouteSubscriber object.
    *
    * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
-   *   The entity type manager service.
-   * @param \Drupal\Core\Config\ConfigFactoryInterfac
+   *   The entity type manager.
+   * @param ConfigFactoryInterfac $factory
+   *   The config factory.
    */
   public function __construct(
     EntityTypeManagerInterface $entity_type_manager,
@@ -67,4 +70,5 @@ class BskyPostRouteSubscriber extends RouteSubscriberBase {
     return $events;
   }
 
-} // End of class
+  // End of class.
+}

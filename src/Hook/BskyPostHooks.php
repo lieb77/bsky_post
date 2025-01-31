@@ -38,4 +38,5 @@ class BskyPostHooks {
     }
   }
 
-} //end of class
+  // End of class.
+}

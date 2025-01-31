@@ -4,16 +4,65 @@ declare(strict_types=1);
 
 namespace Drupal\bsky_post\Form;
 
-use Drupal\node\Entity\NodeType;
+use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Form\ConfigFormBase;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Routing\RouteBuilder;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Configure Bluesky Post settings for this site.
  */
 final class BskyPostSettingsForm extends ConfigFormBase {
 
+  /**
+   * Array to hold available content types.
+   *
+   * @var array of selected content types
+   */
   protected $types;
+
+  /**
+   * Instance of EntityTypeManger.
+   *
+   * @var \Drupal\Core\Entity\EntityTypeManagerInterface
+   */
+  protected $entityTypeManager;
+
+  /**
+   * Instance of Route Builder.
+   *
+   * @var Drupal\Core\Routing\RouteBuilder
+   */
+  protected $routeBuilder;
+
+  /**
+   * Constructor.
+   *
+   * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entityTypeManager
+   *   The entity type manager.
+   * @param \Drupal\Core\Routing\RouteBuilder $routeBuilder
+   *   The route builder.
+   */
+  public function __construct(
+    EntityTypeManagerInterface $entityTypeManager,
+    RouteBuilder $routeBuilder,
+  ) {
+    $this->entityTypeManager = $entityTypeManager;
+    $this->routeBuilder = $routeBuilder;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function create(ContainerInterface $container) {
+    // Instantiates this form class.
+    return new static(
+      // Load the service required to construct this class.
+      $container->get('entity_type.manager'),
+      $container->get('router.builder'),
+    );
+  }
 
   /**
    * {@inheritdoc}
@@ -39,13 +88,13 @@ final class BskyPostSettingsForm extends ConfigFormBase {
     $default = empty($config) ? [] : array_keys($config);
 
     // Get node types.
-    $types = NodeType::loadMultiple();
-    $options = array_keys($types);
+    $nodeTypes = $this->entityTypeManager->getStorage('node')->loadMultiple();
+    $options = array_keys($nodeTypes);
     $this->types = $options;
 
     $form['message'] = [
       '#type' => 'item',
-      '#markup' => $this->t("Select the content types that you want to display the \"Post to Bluesky\" tab on"),
+      '#markup' => $this->t('Select the content types that you want to display the "Post to Bluesky" tab on'),
     ];
 
     $form['types'] = [
@@ -85,7 +134,7 @@ final class BskyPostSettingsForm extends ConfigFormBase {
       ->set('types', $settings)
       ->save();
     parent::submitForm($form, $form_state);
-    \Drupal::service("router.builder")->rebuild();
+    $this->routeBuilder->rebuild();
   }
 
 }

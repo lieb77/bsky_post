@@ -9,30 +9,55 @@ use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\bsky\PostServiceInterface;
 
 /**
- *
+ * Provides the post function to post content to Bluesky.
  */
 class BskyPost {
-  protected $bsky_connector;
+
+  /**
+   * The Post service instance.
+   *
+   * @var Drupal\bsky\PostServiceInterface
+   */
+  protected $bskyConnector;
+
+  /**
+   * Site name .
+   *
+   * @var string
+   */
   protected $site;
 
+  /**
+   * Constructor.
+   *
+   * @param \Drupal\bsky\PostServiceInterface $bsky
+   *   The bsky post service.
+   * @param \Drupal\Core\Config\ConfigFactoryInterface $factory
+   *   The config factory.
+   */
   public function __construct(
     PostServiceInterface $bsky,
     ConfigFactoryInterface $factory,
   ) {
-    $this->bsky_connector = $bsky;
+    $this->bskyConnector = $bsky;
     $config = $factory->get('system.site');
     $this->site = $config->get('name');
   }
 
   /**
+   * Post the message.
    *
+   * @param string $message
+   *   Holds a message.
+   * @param string $link
+   *   Holds a link.
    */
   public function post($message, $link) {
-    $post = $this->bsky_connector->createPost($message);
-    $post = $this->bsky_connector->addCard($post, $link, $this->site, "Read the full post.");
+    $post = $this->bskyConnector->createPost($message);
+    $post = $this->bskyConnector->addCard($post, $link, $this->site, "Read the full post.");
 
     try {
-      $this->bsky_connector->sendPost($post);
+      $this->bskyConnector->sendPost($post);
     }
     catch (HttpStatusCodeException $e) {
       return $e->getMessage();

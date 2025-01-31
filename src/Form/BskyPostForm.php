@@ -8,24 +8,49 @@ use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Drupal\bsky_post\BskyPost;
+use Drupal\Core\Routing\RouteMatchInterface;
 
 /**
  * Provides a form for posting to Bluesky.
  */
 final class BskyPostForm extends FormBase {
-  protected $bsky_service;
+
+  /**
+   * Instance of the BskyPost service.
+   *
+   * @var Drupal\bsky_post\BskyPost
+   */
+  protected $bskyService;
+
+  /**
+   * Node id.
+   *
+   * @var int
+   */
   protected $nid;
+
+  /**
+   * Contains a post.
+   *
+   * @var array
+   */
   protected $post;
 
   /**
-   * Instantiate our form class
-   * and load the services we need
+   * Instantiate our form class and load the services we need.
+   *
+   * @param \Drupal\bsky_post\BskyPost $bskyService
+   *   The post service.
+   * @param \Drupal\Core\Routing\RouteMatchInterface $routeMatch
+   *   The route match interface.
    */
-  public function __construct(BskyPost $bsky_service) {
-    $this->bsky_service = $bsky_service;
-    $this->route = $route;
+  public function __construct(
+    BskyPost $bskyService,
+    RouteMatchInterface $routeMatch,
+  ) {
+    $this->bskyService = $bskyService;
 
-    $node = \Drupal::routeMatch()->getParameter('node');
+    $node = $routeMatch->getParameter('node');
     if (!empty($node)) {
       // Save nid the route back.
       $this->nid = $node->id();
@@ -52,6 +77,7 @@ final class BskyPostForm extends FormBase {
     // Instantiates this form class.
     return new static(
           $container->get('bsky_post.bsky_post'),
+          $container->get('current_route_match')
       );
   }
 
@@ -71,19 +97,19 @@ final class BskyPostForm extends FormBase {
       $form['title'] = [
         '#type'     => 'textfield',
         '#title' => $this->t("Post title"),
-        '#default_value' => $this->t($this->post['title']),
+        '#default_value' => $this->post['title'],
       ];
 
       $form['text'] = [
         '#type'      => 'textarea',
         '#title' => $this->t("Post summary"),
-        '#default_value' => $this->t($this->post['text']),
+        '#default_value' => $this->post['text'],
       ];
 
       $form['link'] = [
         '#type'     => 'textfield',
         '#title' => $this->t("Post link"),
-        '#default_value' => $this->t($this->post['link']),
+        '#default_value' => $this->post['link'],
       ];
 
       $form['actions'] = [
@@ -131,17 +157,18 @@ final class BskyPostForm extends FormBase {
 
     $link = $form_state->getValue('link');
 
-    $err = $this->bsky_service->post($message, $link);
+    $err = $this->bskyService->post($message, $link);
 
     if (FALSE === $err) {
       $this->messenger()->addStatus($this->t("The post has been shared."));
       $form_state->setRedirect('entity.node.canonical', ['node' => $this->nid]);
     }
     else {
-      $this->messenger()->addStatus($this->t($err));
+      $this->messenger()->addStatus($err);
       $form_state->setRebuild();
 
     }
   }
 
-} // End of class
+  // End of class.
+}
