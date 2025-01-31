@@ -7,7 +7,7 @@ namespace Drupal\bsky_post\Form;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Form\ConfigFormBase;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\Core\Routing\RouteBuilder;
+use Drupal\Core\ProxyClass\Routing\RouteBuilder;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -39,9 +39,9 @@ final class BskyPostSettingsForm extends ConfigFormBase {
   /**
    * Constructor.
    *
-   * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entityTypeManager
+   * @param EntityTypeManagerInterface $entityTypeManager
    *   The entity type manager.
-   * @param \Drupal\Core\Routing\RouteBuilder $routeBuilder
+   * @param RouteBuilder $routeBuilder
    *   The route builder.
    */
   public function __construct(
@@ -87,11 +87,11 @@ final class BskyPostSettingsForm extends ConfigFormBase {
     $config = $this->config('bsky_post.settings')->get('types');
     $default = empty($config) ? [] : array_keys($config);
 
-    // Get node types.
-    $nodeTypes = $this->entityTypeManager->getStorage('node')->loadMultiple();
-    $options = array_keys($nodeTypes);
-    $this->types = $options;
-
+    // Get node types.    
+		$types =  \Drupal\node\Entity\NodeType::loadMultiple();
+		$options =  array_keys($types);
+		$this->types = $options;
+		
     $form['message'] = [
       '#type' => 'item',
       '#markup' => $this->t('Select the content types that you want to display the "Post to Bluesky" tab on'),
