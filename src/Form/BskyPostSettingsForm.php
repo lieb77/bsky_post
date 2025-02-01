@@ -88,9 +88,9 @@ final class BskyPostSettingsForm extends ConfigFormBase {
     $default = empty($config) ? [] : array_keys($config);
 
     // Get node types.    
-		$types =  \Drupal\node\Entity\NodeType::loadMultiple();
-		$options =  array_keys($types);
-		$this->types = $options;
+    $types = $this->entityTypeManager->getStorage('node_type')->loadMultiple();
+	$options =  array_keys($types);
+	$this->types = $options;
 		
     $form['message'] = [
       '#type' => 'item',
