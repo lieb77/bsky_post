@@ -58,7 +58,10 @@ final class BskyPostForm extends FormBase {
       // Get the title.
       $title = $node->getTitle();
       // Get the body summary.
-      $text = $node->get('body')->summary;
+      $text = $node->get('body')->summary;      
+      if (empty($text)){
+      	$text = text_summary($node->get('body')->value, 1, 300);
+      }
       // Get the link.
       $link = $node->toUrl()->setAbsolute()->toString();
 
@@ -100,9 +103,14 @@ final class BskyPostForm extends FormBase {
         '#default_value' => $this->post['title'],
       ];
 
+			$help_text = $this->t("If you have not provided a summary, the first 300 characters of the body will appear here. "
+														. "You can edit this anyway you like as this is the text you will be posting.");
+
       $form['text'] = [
         '#type'      => 'textarea',
         '#title' => $this->t("Post summary"),
+        '#description' => $help_text,
+        '#description_display' => 'after',
         '#default_value' => $this->post['text'],
       ];
 
